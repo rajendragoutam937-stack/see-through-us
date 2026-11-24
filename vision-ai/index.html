@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VISION AI — Voice-First Visual Assistant</title>
+    <meta
+      name="description"
+      content="Voice-first AI visual assistant designed to help blind and low-vision users understand their surroundings using live camera vision, speech recognition, and spoken responses."
+    />
+    <meta property="og:title" content="VISION AI — Voice-First Visual Assistant" />
+    <meta
+      property="og:description"
+      content="Voice-first AI visual assistant designed to help blind and low-vision users understand their surroundings."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main assistant controls</a>
+
+    <header class="top-bar">
+      <a href="#main-content" class="brand-wordmark">VISION AI</a>
+
+      <nav class="top-nav" aria-label="Primary sections">
+        <a href="#assistant-controls" class="nav-link">Controls</a>
+        <a href="#camera-view" class="nav-link">Camera</a>
+        <a href="#conversation-section" class="nav-link">Conversation</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="#safety-guide" class="header-cta">
+          Safety Guide
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content" class="workspace">
+      <section class="intro-strip" aria-labelledby="app-heading">
+        <div class="intro-copy">
+          <h1 id="app-heading" class="hero-title">
+            Voice-first surroundings assistant
+          </h1>
+          <p class="hero-subtitle">
+            Connect your camera and microphone to hear concise descriptions of what is
+            around you and ask natural follow-up questions aloud or by typing.
+          </p>
+        </div>
+        <div id="backend-notice" class="backend-notice" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <div class="workspace-grid">
+        <section
+          id="assistant-controls"
+          class="panel panel-controls"
+          aria-labelledby="controls-heading"
+        >
+          <h2 id="controls-heading" class="section-heading">Assistant Controls</h2>
+
+          <div class="primary-cta-group">
+            <button
+              type="button"
+              id="start-stop-btn"
+              class="btn-primary-hero"
+              aria-pressed="false"
+            >
+              <span id="start-stop-icon" class="btn-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                </svg>
+              </span>
+              <span id="start-stop-label">START ASSISTANT</span>
+            </button>
+
+            <div class="secondary-action-row">
+              <button
+                type="button"
+                id="interrupt-btn"
+                class="btn-secondary"
+                disabled
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                </svg>
+                <span>Stop Speaking</span>
+              </button>
+
+              <button
+                type="button"
+                id="analyze-now-btn"
+                class="btn-secondary"
+                disabled
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>Analyze Frame</span>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="status-banner"
+            class="status-banner status-idle"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span id="status-state-label" class="status-state-label">Ready</span>
+            <p id="status-message" class="status-message">
+              Press START ASSISTANT to request camera and microphone permissions and begin.
+            </p>
+          </div>
+
+          <div id="camera-view" class="camera-stage">
+            <div class="camera-header">
+              <h3 class="subsection-heading">Live Camera Feed</h3>
+              <div class="camera-meta">
+                <span id="camera-resolution" class="mono-meta">Camera off</span>
+                <button
+                  type="button"
+                  id="switch-camera-btn"
+                  class="btn-inline"
+                  hidden
+                >
+                  Switch Camera
+                </button>
+              </div>
+            </div>
+
+            <div class="video-frame">
+              <video
+                id="camera-preview"
+                autoplay
+                playsinline
+                muted
+                aria-label="Live camera preview showing what the assistant sees"
+              ></video>
+
+              <div id="camera-fallback" class="camera-fallback">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <p id="camera-fallback-text">
+                  Camera preview will appear here after you press START ASSISTANT and allow access.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-grid" aria-label="Voice and awareness settings">
+            <div class="control-field">
+              <label for="language-select" class="field-label">
+                Language (Voice &amp; AI Responses)
+              </label>
+              <select id="language-select" class="field-select"></select>
+              <p id="voice-compat-note" class="field-help">
+                Speech recognition and spoken voice quality depend on your browser and device.
+              </p>
+            </div>
+
+            <div class="control-field">
+              <div class="label-row">
+                <label for="volume-slider" class="field-label">Speech Volume</label>
+                <span id="volume-value" class="mono-meta tabular-nums">100%</span>
+              </div>
+              <input
+                type="range"
+                id="volume-slider"
+                class="field-range"
+                min="0"
+                max="100"
+                step="5"
+                value="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="100"
+              />
+              <p class="field-help">
+                Adjusts spoken answer volume from 0% (muted) to 100%.
+              </p>
+            </div>
+
+            <div class="control-field control-field-full">
+              <div class="awareness-row">
+                <div>
+                  <span class="field-label">Continuous Visual Awareness</span>
+                  <p id="awareness-help" class="field-help">
+                    Periodically analyzes the latest camera view every 12 seconds when idle.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  id="awareness-toggle"
+                  class="btn-toggle"
+                  aria-pressed="true"
+                >
+                  Auto: On
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="conversation-section"
+          class="panel panel-conversation"
+          aria-labelledby="conversation-heading"
+        >
+          <div class="conversation-header">
+            <h2 id="conversation-heading" class="section-heading">
+              Voice &amp; Text Conversation
+            </h2>
+            <button
+              type="button"
+              id="clear-history-btn"
+              class="btn-inline"
+            >
+              Clear Log
+            </button>
+          </div>
+
+          <div
+            id="interim-transcript"
+            class="transcript-box"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span class="transcript-label">Microphone Status:</span>
+            <span id="transcript-text" class="transcript-text">
+              Idle. Start the assistant to listen for voice questions, or type below.
+            </span>
+          </div>
+
+          <form id="question-form" class="question-form" novalidate>
+            <label for="question-input" class="field-label">
+              Ask a Question About Your Surroundings
+            </label>
+            <div class="question-input-row">
+              <input
+                type="text"
+                id="question-input"
+                class="field-input"
+                maxlength="500"
+                autocomplete="off"
+                placeholder="Example: What is in front of me?"
+              />
+              <button type="submit" id="ask-btn" class="btn-ask">
+                Ask AI
+              </button>
+            </div>
+          </form>
+
+          <div class="quick-prompts" aria-label="Quick example questions">
+            <p class="field-label">Quick Questions</p>
+            <div class="quick-prompt-grid">
+              <button type="button" class="btn-quick" data-question="What is in front of me?">
+                What is in front of me?
+              </button>
+              <button type="button" class="btn-quick" data-question="Is there a wall or obstacle ahead?">
+                Is there a wall ahead?
+              </button>
+              <button type="button" class="btn-quick" data-question="Describe this room.">
+                Describe this room
+              </button>
+              <button type="button" class="btn-quick" data-question="What is on the table?">
+                What is on the table?
+              </button>
+              <button type="button" class="btn-quick" data-question="Is someone standing nearby?">
+                Is someone nearby?
+              </button>
+              <button type="button" class="btn-quick" data-question="What am I looking at?">
+                What am I looking at?
+              </button>
+            </div>
+          </div>
+
+          <div class="log-wrapper">
+            <h3 class="subsection-heading">Conversation History</h3>
+            <div
+              id="conversation-log"
+              class="conversation-log"
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions"
+            >
+              <div id="empty-log-state" class="empty-log-state">
+                No visual descriptions yet. Press START ASSISTANT to capture an initial view
+                and hear what the camera sees.
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section id="safety-guide" class="safety-panel" aria-labelledby="safety-heading">
+        <div class="safety-columns">
+          <div>
+            <h2 id="safety-heading" class="section-heading">Important Safety Information</h2>
+            <p class="safety-lead">
+              VISION AI is an informational assistant and is not a certified mobility aid,
+              cane replacement, guide dog replacement, or navigation device.
+            </p>
+            <ul class="safety-list">
+              <li>
+                Never rely on AI image descriptions to confirm that a path is safe, unobstructed,
+                or free of drop-offs, steps, wet surfaces, or moving hazards.
+              </li>
+              <li>
+                Never use VISION AI to judge traffic or decide when it is safe to cross a street or road.
+              </li>
+              <li>
+                Distance and depth estimates from a single camera frame can be inaccurate; treat all
+                descriptions as approximate visual context only.
+              </li>
+              <li>
+                Camera blur, low lighting, glare, and narrow framing can hide objects or people.
+              </li>
+            </ul>
+          </div>
+
+          <div class="shortcuts-block">
+            <h3 class="subsection-heading">Keyboard Shortcuts &amp; Accessibility</h3>
+            <dl class="shortcut-list">
+              <div class="shortcut-item">
+                <dt><kbd>Alt</kbd> + <kbd>S</kbd></dt>
+                <dd>Start or stop the assistant</dd>
+              </div>
+              <div class="shortcut-item">
+                <dt><kbd>Escape</kbd></dt>
+                <dd>Immediately interrupt assistant speech and resume listening</dd>
+              </div>
+              <div class="shortcut-item">
+                <dt><kbd>Alt</kbd> + <kbd>A</kbd></dt>
+                <dd>Capture and analyze the current camera frame now</dd>
+              </div>
+              <div class="shortcut-item">
+                <dt><kbd>Enter</kbd></dt>
+                <dd>Submit typed question when focused in the question box</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        VISION AI — Accessible voice-first scene assistance. Camera frames are sent securely
+        through the backend only while active and are not stored permanently.
+      </p>
+    </footer>
+
+    <script defer src="camera.js"></script>
+    <script defer src="voice.js"></script>
+    <script defer src="assistant.js"></script>
+    <script defer src="script.js"></script>
+  </body>
+</html>

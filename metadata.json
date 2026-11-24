@@ -1,0 +1,6 @@
+{
+  "name": "VISION AI",
+  "description": "Voice-first AI visual assistant designed to help blind and low-vision users understand their surroundings using live camera vision, speech recognition, and spoken responses.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
